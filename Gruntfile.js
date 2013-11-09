@@ -77,7 +77,7 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          name: 'main',
+          name: 'main.min',
           baseUrl: 'public/js',
           mainConfigFile: 'public/js/config.js',
           out: 'public/js/main.min.js'
@@ -90,6 +90,21 @@ module.exports = function(grunt) {
           base: 'public'
         }
       }
+    },
+    copy: {
+      deploy: {
+        files: [{
+          expand: true,
+          cwd: 'public/',
+          src: [
+            '**',
+            '!**/*.map', '!js/**/*.js',
+            'js/**/*.min.js'
+          ],
+          dest: 'dist/',
+          filter: 'isFile'
+        }]
+      }
     }
   });
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -97,6 +112,10 @@ module.exports = function(grunt) {
     'release-build',
     'connect',
     'watch'
+  ]);
+  grunt.registerTask('deploy', [
+    'release-build',
+    'copy'
   ]);
   grunt.registerTask('tsd', [
     'exec:tsd'
