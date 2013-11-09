@@ -1,29 +1,28 @@
-.container
-  h1 ぬめぐれ
-  p ぬめろんAI by <a href='https://twitter.com/progremaster'>@ぷろぐれ</a>
-  .row
-    .col-xs-6
-      .form-inline
-        .form-group
-          label あなたが思い浮かべた数:
-            | 
-            input.form-control(style='max-width: 80px', placeholder='例：123', maxlength='3')
-        | 
-        .checkbox
-          label
-            input(type='checkbox', checked)
-            |  先行
-        | 
-        button.btn.btn-default ゲーム開始
-    .col-xs-6
-      .form-inline
-        .form-group
-          label ぬめぐれが思い浮かべた数:
-            | 
-            input.form-control(style='max-width: 80px', readonly, value='123')
-  .row
-    .col-xs-12
-      .alert.alert-info ここにメッセージが表示されます
+.row
+  .col-xs-12
+    .alert.alert-info(ng-show='info.length > 0') {{info}}
+    .alert.alert-danger(ng-show='danger.length > 0') {{danger}}
+.row(ng-hide='isGameStarted')
+  .col-xs-6
+    .form-inline
+      .form-group
+        label あなたが思い浮かべた数:
+          | 
+          input.form-control(ng-model='playerNum', style='max-width: 80px', placeholder='例：123', maxlength='3')
+      | 
+      .checkbox
+        label
+          input(ng-model='playerFirst', type='checkbox')
+          |  先攻
+      | 
+      button.btn.btn-default(ng-click='start(playerNum, aiNum, playerFirst)') ゲーム開始
+  .col-xs-6
+    .form-inline
+      .form-group
+        label ぬめぐれが思い浮かべた数:
+          | 
+          input.form-control(ng-model='aiNum', style='max-width: 80px', readonly, value='123')
+div(ng-show='isGameStarted')
   .row
     .col-xs-6
       h2(style='font-size: x-large') あなた
