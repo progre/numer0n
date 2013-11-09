@@ -3,46 +3,24 @@ import InferenceMachine = require('./inferencemachine');
 
 export = AI;
 class AI {
-    private myNumber = '000';
+    myNumber = '000';
     private inferenceMachine = new InferenceMachine();
 
-    constructor(/** ƒvƒŒƒCƒ„[‚É—\‘z‚³‚¹‚é”š */num: number) {
-        this.myNumber = util.to0PaddedString(num);
+    constructor(/** ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«äºˆæƒ³ã•ã›ã‚‹æ•°å­— */num: string) {
+        this.myNumber = num;
     }
 
-    /** ‘Šè‚Ìè‚ğ—\‘z‚·‚é */
+    /** ç›¸æ‰‹ã®æ‰‹ã‚’äºˆæƒ³ã™ã‚‹ */
     call() {
         return this.inferenceMachine.get();
     }
 
-    setHint(num: number, hits: number, blows: number) {
-        this.inferenceMachine.setHint(util.to0PaddedString(num), hits, blows);
+    putHint(num: string, hits: number, blows: number) {
+        this.inferenceMachine.setHint(num, hits, blows);
     }
 
-    /** ƒqƒ“ƒg‚ğ•Ô‚· */
-    getHint(num: number) {
-        return getHint(this.myNumber, util.to0PaddedString(num));
+    /** ãƒ’ãƒ³ãƒˆã‚’è¿”ã™ */
+    getHint(num: string) {
+        return util.getHint(this.myNumber, num);
     }
-}
-
-
-function getHint(str1: string, str2: string) {
-    if (util.containsDuplicate(str1) || util.containsDuplicate(str2))
-        throw new Error('containing duplicate not support');
-    var hit = 0;
-    var blow = 0;
-    for (var i = 0, iLen = str1.length; i < iLen; i++) {
-        if (str1[i] === str2[i]) {
-            hit++;
-            continue;
-        }
-        for (var j = 0, jLen = str2.length; j < jLen; j++) {
-            if (i === j)
-                continue;
-            if (str1[i] === str2[j]) {
-                blow++;
-            }
-        }
-    }
-    return [hit, blow];
 }

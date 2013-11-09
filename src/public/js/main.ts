@@ -13,22 +13,54 @@ app.config(['$routeProvider',
     }
 ]);
 app.controller('IndexController',
-    ['$scope', ($scope: any) => {
+    ['$scope', '$timeout', ($scope: any, $timeout: ng.ITimeoutService) => {
         var numer0n = new Numer0n();
-        $scope.playerFirst = true;
-        $scope.aiNum = numer0n.getRandomNumber().toString();
-        $scope.start = (playerNum: string, playerFirst: boolean) => {
+        $scope.aiNumer = numer0n.getAINumber();
+        $scope.start = (playerNumber: string, playerFirst: boolean) => {
             clearAlerts($scope);
             try {
-                numer0n.start(playerNum, playerFirst);
+                numer0n.start(playerNumber, playerFirst);
             } catch (e) {
-                $scope['danger'] = e.message;
+                $scope.danger = e.message;
+                return;
             }
+            $scope.isGameStarted = true;
+            mainLoop($timeout, $scope, numer0n);
+        };
+        $scope.call = () => {
+            clearAlerts($scope);
+            try {
+                numer0n.put($scope.lastPlayerAttack);
+            } catch (e) {
+                $scope.danger = e.message;
+                return;
+            }
+            mainLoop($timeout, $scope, numer0n);
         };
     }]);
 
 angular.bootstrap(<any>document, ['app']);
 
 function clearAlerts($scope: any) {
+    $scope.info = '';
     $scope.danger = '';
+}
+
+function mainLoop($timeout: ng.ITimeoutService, $scope: any, numer0n: Numer0n) {
+    $scope.wait = true;
+    var sleep = numer0n.next();
+    $scope.info = numer0n.info;
+    $scope.lastPlayerAttack = numer0n.lastPlayerAttack;
+    $scope.playerMessage = numer0n.playerMessage;
+    $scope.lastAIAttack = numer0n.lastAIAttack;
+    $scope.aiMessage = numer0n.aiMessage;
+    switch (sleep) {
+        case -1:
+            $scope.wait = false;
+            return;
+        case -2:
+            $scope.done = true;
+            return;
+    }
+    $timeout(() => mainLoop($timeout, $scope, numer0n), sleep);
 }

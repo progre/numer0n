@@ -1,57 +1,60 @@
-.row
-  .col-xs-12
-    .alert.alert-info(ng-show='info.length > 0') {{info}}
-    .alert.alert-danger(ng-show='danger.length > 0') {{danger}}
 .row(ng-hide='isGameStarted')
   .col-xs-6
     .form-inline
       .form-group
         label あなたが思い浮かべた数:
           | 
-          input.form-control(ng-model='playerNum', style='max-width: 80px', placeholder='例：123', maxlength='3')
+          input.form-control(ng-model='playerNumber', style='max-width: 80px', placeholder='例：123', maxlength='3')
       | 
       .checkbox
         label
-          input(ng-model='playerFirst', type='checkbox')
+          input(ng-model='playerFirst', ng-init='playerFirst = true', type='checkbox')
           |  先攻
       | 
-      button.btn.btn-default(ng-click='start(playerNum, aiNum, playerFirst)') ゲーム開始
+      button.btn.btn-default(ng-click='start(playerNumber, playerFirst)') ゲーム開始
   .col-xs-6
     .form-inline
       .form-group
         label ぬめぐれが思い浮かべた数:
           | 
-          input.form-control(ng-model='aiNum', style='max-width: 80px', readonly, value='123')
-div(ng-show='isGameStarted')
-  .row
-    .col-xs-6
-      h2(style='font-size: x-large') あなた
-      .form-inline
-        .form-group
-          label 予想した数:
-            | 
-            input.form-control(style='max-width: 80px', placeholder='例：123', maxlength='3')
+          input.form-control(ng-model='aiNumer', style='max-width: 80px', readonly)
+.row(ng-show='isGameStarted')
+  .col-xs-6
+    h2(style='font-size: x-large') あなた
+    .form-inline
+      .form-group
+        label 予想した数:
           | 
-          button.btn.btn-default コール
-      |「123」
-    .col-xs-6
-      h2(style='font-size: x-large') ぬめぐれ
-      .form-inline
-        .form-group
-          label 予想した数:
-            | 
-            input.form-control(style='max-width: 80px', readonly, value='123')
-      p 「雑魚乙ぅ！」
-  .row
-    .col-xs-6
-      h2(style='font-size: x-large') これまでの予想
-      ul.list-unstyled
-        li 履歴1
-        li 履歴2
-        li 履歴3
-    .col-xs-6
-      h2(style='font-size: x-large') これまでの予想
-      ul.list-unstyled
-        li 履歴1
-        li 履歴2
-        li 履歴3
+          input.form-control(ng-model='lastPlayerAttack', ng-disabled='wait', style='max-width: 80px', placeholder='例：123', maxlength='3')
+        | 
+        button.btn.btn-default(ng-click='call()', ng-disabled='wait') コール
+    p
+      span(ng-show='playerMessage.length > 0')
+        「{{playerMessage}}」
+  .col-xs-6
+    h2(style='font-size: x-large') ぬめぐれ
+    .form-inline
+      .form-group
+        label 予想した数:
+          | 
+          input.form-control(ng-model='lastAIAttack', style='max-width: 80px', readonly)
+    p
+      span(ng-show='aiMessage.length > 0')
+        「{{aiMessage}}」
+.row
+  .col-xs-12
+    .alert.alert-info(ng-show='info.length > 0') {{info}}
+    .alert.alert-danger(ng-show='danger.length > 0') {{danger}}
+.row(ng-show='isGameStarted')
+  .col-xs-6
+    h2(style='font-size: x-large') これまでの予想
+    ul.list-unstyled
+      li 123 → 0 eat, 1 bite
+      li 123 → 0 eat, 1 bite
+      li 123 → 0 eat, 1 bite
+  .col-xs-6
+    h2(style='font-size: x-large') これまでの予想
+    ul.list-unstyled
+      li 123 → 0 eat, 1 bite
+      li 123 → 0 eat, 1 bite
+      li 123 → 0 eat, 1 bite
