@@ -1,1 +1,53 @@
-.
+.container
+  h1 ぬめぐれ
+  p ぬめろんAI by <a href='https://twitter.com/progremaster'>@ぷろぐれ</a>
+  .row
+    .col-xs-6
+      .form-inline
+        .form-group
+          label あなたが思い浮かべた数:
+            | 
+            input.form-control(style='max-width: 80px', placeholder='例：123', maxlength='3')
+          | 
+          button.btn.btn-default ゲーム開始
+    .col-xs-6
+      .form-inline
+        .form-group
+          label ぬめぐれが思い浮かべた数:
+            | 
+            input.form-control(style='max-width: 80px', readonly, value='123')
+  .row
+    .col-xs-12
+      .alert.alert-info ここにメッセージが表示されます
+  .row
+    .col-xs-6
+      h2(style='font-size: x-large') あなた
+      .form-inline
+        .form-group
+          label 予想した数:
+            | 
+            input.form-control(style='max-width: 80px', placeholder='例：123', maxlength='3')
+          | 
+          button.btn.btn-default コール
+      |「123」
+    .col-xs-6
+      h2(style='font-size: x-large') ぬめぐれ
+      .form-inline
+        .form-group
+          label 予想した数:
+            | 
+            input.form-control(style='max-width: 80px', readonly, value='123')
+      p 「雑魚乙ぅ！」
+  .row
+    .col-xs-6
+      h2(style='font-size: x-large') これまでの予想
+      ul.list-unstyled
+        li 履歴1
+        li 履歴2
+        li 履歴3
+    .col-xs-6
+      h2(style='font-size: x-large') これまでの予想
+      ul.list-unstyled
+        li 履歴1
+        li 履歴2
+        li 履歴3
