@@ -6,8 +6,8 @@ class Numer0n {
     private state = State.INACTIVE;
     private playerNumber = '';
     private ai: AI;
-    private playerAttacks = [];
-    private aiAttacks = [];
+    playerAttacks = [];
+    aiAttacks = [];
     info = '';
     lastPlayerAttack = '';
     playerMessage = '';
@@ -58,7 +58,11 @@ class Numer0n {
                     return -2;
                 }
                 this.aiMessage = hintToString(hint);
-                this.playerAttacks.push(toString(this.lastPlayerAttack, hint));
+                this.playerAttacks.push({
+                    idx: this.playerAttacks.length,
+                    item: toString(this.lastPlayerAttack, hint)
+                });
+                console.log(this.playerAttacks.length);
                 this.state = State.PRE_ATTACK_PLAYER;
                 return 1000;
             case State.PRE_ATTACK_PLAYER:
@@ -77,7 +81,10 @@ class Numer0n {
                     return -2;
                 }
                 this.playerMessage = hintToString(hint);
-                this.aiAttacks.push(toString(this.lastAIAttack, hint));
+                this.aiAttacks.push({
+                    idx: this.aiAttacks.length,
+                    item: toString(this.lastAIAttack, hint)
+                });
                 this.ai.putHint(this.lastAIAttack, hint[0], hint[1]);
                 this.state = State.PRE_ATTACK_AI;
                 return 1000;

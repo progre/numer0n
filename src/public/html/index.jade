@@ -45,16 +45,14 @@
   .col-xs-12
     .alert.alert-info(ng-show='info.length > 0') {{info}}
     .alert.alert-danger(ng-show='danger.length > 0') {{danger}}
+.container(ng-show='done')
+  button.btn.btn-default(ng-click='reset()') もう1回プレイする
 .row(ng-show='isGameStarted')
   .col-xs-6
     h2(style='font-size: x-large') これまでの予想
     ul.list-unstyled
-      li 123 → 0 eat, 1 bite
-      li 123 → 0 eat, 1 bite
-      li 123 → 0 eat, 1 bite
+      li(ng-repeat='attack in playerAttacks') {{attack.item}}
   .col-xs-6
     h2(style='font-size: x-large') これまでの予想
     ul.list-unstyled
-      li 123 → 0 eat, 1 bite
-      li 123 → 0 eat, 1 bite
-      li 123 → 0 eat, 1 bite
+      li(ng-repeat='attack in aiAttacks') {{attack.item}}
