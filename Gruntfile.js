@@ -109,7 +109,7 @@ module.exports = function(grunt) {
   });
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
   grunt.registerTask('default', [
-    'release-build',
+    'debug-build',
     'connect',
     'watch'
   ]);

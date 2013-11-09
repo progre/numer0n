@@ -1,4 +1,5 @@
 /// <reference path="../../DefinitelyTyped/angular-1.0.d.ts"/>
+/// <reference path="../../DefinitelyTyped/linq.d.ts"/>
 import Numer0n = require('./numer0n/numer0n');
 
 var app = angular.module('app', ['ngRoute']);

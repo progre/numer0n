@@ -6,3 +6,4 @@ node_modules/
 
 !Gruntfile.js
 !public/js/config.js
+!public/js/lib/**/*.js

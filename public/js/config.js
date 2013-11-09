@@ -1,7 +1,6 @@
 require.config({
   paths: {
-  },
-  shim: {
+    'linqjs': 'lib/linq.min'
   },
   deps: ['main']
 });
