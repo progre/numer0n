@@ -23,6 +23,10 @@ class Numer0n {
     }
 
     start(playerNumber: string, playerFirst = true) {
+        if (playerNumber === 'tst') {
+            benchmark();
+            throw new Error();
+        }
         if (!isNumer0nString(playerNumber))
             throw new Error('重複のない3桁の数字を入力してください');
         this.playerNumber = playerNumber;
@@ -62,7 +66,6 @@ class Numer0n {
                     idx: this.playerAttacks.length,
                     item: toString(this.lastPlayerAttack, hint)
                 });
-                console.log(this.playerAttacks.length);
                 this.state = State.PRE_ATTACK_PLAYER;
                 return 1000;
             case State.PRE_ATTACK_PLAYER:
@@ -127,4 +130,33 @@ enum State {
     PRE_ATTACK_PLAYER,
     ATTACK_PLAYER,
     PRE_ATTACK_AI
+}
+
+function benchmark() {
+    var count = 0;
+    var max = 0;
+    var func = i => {
+        var ai = new AI('012');
+        for (var j = 0; ; j++) {
+            var call = ai.call();
+            var hint = util.getHint('012', call);
+            if (hint[0] === 3) {
+                count += j;
+                if (max < j)
+                    max = j;
+                break;
+            }
+            ai.putHint(call, hint[0], hint[1]);
+        }
+
+        i++;
+        if (i === 1) {
+            console.log(count / 10, max);
+            return;
+        }
+        setTimeout(() =>
+            func(i), 0.0001);
+    };
+
+    func(0);
 }

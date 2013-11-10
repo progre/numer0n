@@ -12,10 +12,13 @@ export function containsDuplicate(str: string) {
     }
     return false;
 }
-
+var memo = {};
 export function getHint(str1: string, str2: string) {
-    if (containsDuplicate(str1) || containsDuplicate(str2))
-        throw new Error('containing duplicate not support');
+    //if (containsDuplicate(str1) || containsDuplicate(str2))
+    //    throw new Error('containing duplicate not support');
+    if (memo[str1 + str2] != null) {
+        return memo[str1 + str2];
+    }
     var hit = 0;
     var blow = 0;
     for (var i = 0, iLen = str1.length; i < iLen; i++) {
@@ -31,5 +34,6 @@ export function getHint(str1: string, str2: string) {
             }
         }
     }
+    memo[str1 + str2] = [hit, blow];
     return [hit, blow];
 }
