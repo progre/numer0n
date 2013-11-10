@@ -59,6 +59,7 @@ class Numer0n {
                 return 500;
             case State.ATTACK_AI:
                 var hint = this.ai.getHint(this.lastPlayerAttack);
+                this.aiMessage = hintToString(hint);
                 if (!this.playerFirst) {
                     if (this.reach) {
                         if (hint[0] === 3) {
@@ -78,12 +79,11 @@ class Numer0n {
                     }
                 } else {
                     if (hint[0] === 3) {
-                        this.aiMessage = 'まずい';
+                        this.aiMessage += '。なん…だと…';
                         this.info = 'リーチです';
                         this.reach = true;
                     }
                 }
-                this.aiMessage = hintToString(hint);
                 this.playerAttacks.push({
                     idx: this.playerAttacks.length,
                     item: toString(this.lastPlayerAttack, hint)
@@ -100,31 +100,27 @@ class Numer0n {
                 return 500;
             case State.ATTACK_PLAYER:
                 var hint = util.getHint(this.playerNumber, this.lastAIAttack);
+                this.playerMessage = hintToString(hint);
                 if (this.playerFirst) {
                     if (this.reach) {
                         if (hint[0] === 3) {
-                            this.playerMessage = '';
                             this.info = '引き分けです';
                             return -2;
                         } else {
-                            this.playerMessage = hintToString(hint);
                             this.info = 'あなたの勝ちです';
                             return -2;
                         }
                     }
                     if (hint[0] === 3) {
-                        this.playerMessage = hintToString(hint);
                         this.info = 'あなたの負けです';
                         return -2;
                     }
                 } else {
                     if (hint[0] === 3) {
-                        this.playerMessage = hintToString(hint);
                         this.info = 'リーチです';
                         this.reach = true;
                     }
                 }
-                this.playerMessage = hintToString(hint);
                 this.aiAttacks.push({
                     idx: this.aiAttacks.length,
                     item: toString(this.lastAIAttack, hint)
