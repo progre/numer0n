@@ -13,6 +13,8 @@ class Numer0n {
     playerMessage = '';
     lastAIAttack = '';
     aiMessage = '';
+    playerFirst = true;
+    reach = false;
 
     constructor() {
         this.ai = new AI(getRandomNumber());
@@ -23,6 +25,7 @@ class Numer0n {
     }
 
     start(playerNumber: string, playerFirst = true) {
+        this.playerFirst = playerFirst;
         if (playerNumber === 'tst') {
             benchmark();
             throw new Error();
@@ -56,10 +59,29 @@ class Numer0n {
                 return 500;
             case State.ATTACK_AI:
                 var hint = this.ai.getHint(this.lastPlayerAttack);
-                if (hint[0] === 3) {
-                    this.aiMessage = '参りました';
-                    this.info = 'あなたの勝ちです';
-                    return -2;
+                if (!this.playerFirst) {
+                    if (this.reach) {
+                        if (hint[0] === 3) {
+                            this.aiMessage = 'やりよるね。';
+                            this.info = '引き分けです';
+                            return -2;
+                        } else {
+                            this.aiMessage = hintToString(hint) + '。 雑魚乙ぅ！';
+                            this.info = 'あなたの負けです';
+                            return -2;
+                        }
+                    }
+                    if (hint[0] === 3) {
+                        this.aiMessage = '参りました';
+                        this.info = 'あなたの勝ちです';
+                        return -2;
+                    }
+                } else {
+                    if (hint[0] === 3) {
+                        this.aiMessage = 'まずい';
+                        this.info = 'リーチです';
+                        this.reach = true;
+                    }
                 }
                 this.aiMessage = hintToString(hint);
                 this.playerAttacks.push({
@@ -78,10 +100,29 @@ class Numer0n {
                 return 500;
             case State.ATTACK_PLAYER:
                 var hint = util.getHint(this.playerNumber, this.lastAIAttack);
-                if (hint[0] === 3) {
-                    this.playerMessage = '';
-                    this.info = 'あなたの負けです';
-                    return -2;
+                if (this.playerFirst) {
+                    if (this.reach) {
+                        if (hint[0] === 3) {
+                            this.playerMessage = '';
+                            this.info = '引き分けです';
+                            return -2;
+                        } else {
+                            this.playerMessage = hintToString(hint);
+                            this.info = 'あなたの勝ちです';
+                            return -2;
+                        }
+                    }
+                    if (hint[0] === 3) {
+                        this.playerMessage = hintToString(hint);
+                        this.info = 'あなたの負けです';
+                        return -2;
+                    }
+                } else {
+                    if (hint[0] === 3) {
+                        this.playerMessage = hintToString(hint);
+                        this.info = 'リーチです';
+                        this.reach = true;
+                    }
                 }
                 this.playerMessage = hintToString(hint);
                 this.aiAttacks.push({
