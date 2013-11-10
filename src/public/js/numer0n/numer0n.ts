@@ -39,7 +39,7 @@ class Numer0n {
         if (playerFirst) {
             this.state = State.PRE_ATTACK_AI;
         } else {
-            this.state = State.PRE_ATTACK_PLAYER;
+            this.state = State.INFERENCE_WAIT;
         }
     }
 
@@ -92,16 +92,19 @@ class Numer0n {
                     idx: this.playerAttacks.length,
                     item: toString(this.lastPlayerAttack, hint)
                 });
-                this.state = State.PRE_ATTACK_PLAYER;
+                this.state = State.INFERENCE_WAIT;
+                return promise.resolve(1);
+            case State.INFERENCE_WAIT:
                 // 先に計算しとく
-                this.ai.callAsync().then(result => {
-                    this.lastAIAttack = result;
+                this.ai.processAsync().then(() => {
                     this.info = 'ボタンを押してください';
+                    this.state = State.PRE_ATTACK_PLAYER;
                     promise.resolve(-3);
                 });
                 this.info = 'ぬめぐれが考えています…';
                 return promise;
             case State.PRE_ATTACK_PLAYER:
+                this.lastAIAttack = this.ai.call();
                 this.lastPlayerAttack = '';
                 this.playerMessage = '';
                 this.aiMessage = this.lastAIAttack;
@@ -174,6 +177,7 @@ enum State {
     INACTIVE,
     READY,
     ATTACK_AI,
+    INFERENCE_WAIT,
     PRE_ATTACK_PLAYER,
     ATTACK_PLAYER,
     PRE_ATTACK_AI

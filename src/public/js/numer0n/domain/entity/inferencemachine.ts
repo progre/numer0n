@@ -10,23 +10,37 @@ class InferenceMachine {
         .where((x: string) => !util.containsDuplicate(x))
         .toArray());
     private candidates: linqjs.IEnumerable<string>;
+    private value = '';
 
     constructor() {
         this.candidates = this.numbers;
     }
 
     get() {
-        if (this.numbers === this.candidates ||
-            this.candidates.count() <= 3)
-            return this.candidates.shuffle().first();
+        if (this.value.length === 0) {
+            this.process();
+        }
+        return this.value;
+    }
+
+    process() {
+        if (this.numbers === this.candidates
+            || this.candidates.count() <= 3) {
+            this.value = this.candidates.shuffle().first();
+            return;
+        }
         var list = compress(this.numbers
             .select(x => ({ str: x, score: this.calcScore(x) })))
-        return list.where(x => x.score === list.max(x => x.score))
+        this.value = list.where(x => x.score === list.max(x => x.score))
             .shuffle().first().str;
     }
-    getAsync() {
+
+    processAsync() {
         var promise = new cutil.Promise();
-        setTimeout(() => promise.resolve(this.get()), 500);
+        setTimeout(() => {
+            this.process();
+            promise.resolve(null);
+        }, 500);
         return promise;
     }
 

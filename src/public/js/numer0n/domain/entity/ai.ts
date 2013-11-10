@@ -15,10 +15,11 @@ class AI {
     call() {
         return this.inferenceMachine.get();
     }
-    callAsync() {
+
+    processAsync() {
         var promise = new cutil.Promise();
-        this.inferenceMachine.getAsync().then(result => {
-            promise.resolve(result);
+        this.inferenceMachine.processAsync().then(() => {
+            promise.resolve(null);
         });
         return promise;
     }
