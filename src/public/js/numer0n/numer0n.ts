@@ -1,3 +1,4 @@
+import cutil = require('./../common/util');
 import util = require('./domain/service/util');
 import AI = require('./domain/entity/ai');
 
@@ -48,7 +49,8 @@ class Numer0n {
         this.state = State.READY;
     }
 
-    next() {
+    nextAsync() {
+        var promise = new cutil.Promise()
         switch (this.state) {
             case State.READY:
                 this.lastAIAttack = '';
@@ -56,7 +58,7 @@ class Numer0n {
                 this.playerMessage = this.lastPlayerAttack;
                 this.info = 'あなたの攻撃です';
                 this.state = State.ATTACK_AI;
-                return 500;
+                return promise.resolve(500);
             case State.ATTACK_AI:
                 var hint = this.ai.getHint(this.lastPlayerAttack);
                 this.aiMessage = hintToString(hint);
@@ -65,17 +67,17 @@ class Numer0n {
                         if (hint[0] === 3) {
                             this.aiMessage = 'やりよるね。';
                             this.info = '引き分けです';
-                            return -2;
+                            return promise.resolve(-2);
                         } else {
                             this.aiMessage = hintToString(hint) + '。 雑魚乙ぅ！';
                             this.info = 'あなたの負けです';
-                            return -2;
+                            return promise.resolve(-2);
                         }
                     }
                     if (hint[0] === 3) {
                         this.aiMessage = '参りました';
                         this.info = 'あなたの勝ちです';
-                        return -2;
+                        return promise.resolve(-2);
                     }
                 } else {
                     if (hint[0] === 3) {
@@ -89,7 +91,7 @@ class Numer0n {
                     item: toString(this.lastPlayerAttack, hint)
                 });
                 this.state = State.PRE_ATTACK_PLAYER;
-                return 1000;
+                return promise.resolve(1000);
             case State.PRE_ATTACK_PLAYER:
                 this.lastPlayerAttack = '';
                 this.playerMessage = '';
@@ -97,7 +99,7 @@ class Numer0n {
                 this.aiMessage = this.lastAIAttack;
                 this.info = 'ぬめぐれの攻撃です';
                 this.state = State.ATTACK_PLAYER;
-                return 500;
+                return promise.resolve(500);
             case State.ATTACK_PLAYER:
                 var hint = util.getHint(this.playerNumber, this.lastAIAttack);
                 this.playerMessage = hintToString(hint);
@@ -105,15 +107,15 @@ class Numer0n {
                     if (this.reach) {
                         if (hint[0] === 3) {
                             this.info = '引き分けです';
-                            return -2;
+                            return promise.resolve(-2);
                         } else {
                             this.info = 'あなたの勝ちです';
-                            return -2;
+                            return promise.resolve(-2);
                         }
                     }
                     if (hint[0] === 3) {
                         this.info = 'あなたの負けです';
-                        return -2;
+                        return promise.resolve(-2);
                     }
                 } else {
                     if (hint[0] === 3) {
@@ -127,10 +129,10 @@ class Numer0n {
                 });
                 this.ai.putHint(this.lastAIAttack, hint[0], hint[1]);
                 this.state = State.PRE_ATTACK_AI;
-                return 1000;
+                return promise.resolve(1000);
             case State.PRE_ATTACK_AI:
                 this.info = 'あなたの番です。コールしてください。';
-                return -1;
+                return promise.resolve(-1);
         }
     }
 }

@@ -58,21 +58,25 @@ angular.bootstrap(<any>document, ['app']);
 
 function mainLoop($timeout: ng.ITimeoutService, $scope: any, numer0n: Numer0n) {
     $scope.wait = true;
-    var sleep = numer0n.next();
-    $scope.info = numer0n.info;
-    $scope.lastPlayerAttack = numer0n.lastPlayerAttack;
-    $scope.playerMessage = numer0n.playerMessage;
-    $scope.lastAIAttack = numer0n.lastAIAttack;
-    $scope.aiMessage = numer0n.aiMessage;
-    $scope.playerAttacks = numer0n.playerAttacks;
-    $scope.aiAttacks = numer0n.aiAttacks;
-    switch (sleep) {
-        case -1:
-            $scope.wait = false;
-            return;
-        case -2:
-            $scope.done = true;
-            return;
-    }
-    $timeout(() => mainLoop($timeout, $scope, numer0n), sleep);
+    numer0n.nextAsync().then(sleep => {
+        console.log(1)
+        $timeout(() => {
+            $scope.info = numer0n.info;
+            $scope.lastPlayerAttack = numer0n.lastPlayerAttack;
+            $scope.playerMessage = numer0n.playerMessage;
+            $scope.lastAIAttack = numer0n.lastAIAttack;
+            $scope.aiMessage = numer0n.aiMessage;
+            $scope.playerAttacks = numer0n.playerAttacks;
+            $scope.aiAttacks = numer0n.aiAttacks;
+            switch (sleep) {
+                case -1:
+                    $scope.wait = false;
+                    return;
+                case -2:
+                    $scope.done = true;
+                    return;
+            }
+            $timeout(() => mainLoop($timeout, $scope, numer0n), sleep);
+        }, 0.001);
+    });
 }
