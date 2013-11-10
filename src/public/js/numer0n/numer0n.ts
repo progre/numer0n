@@ -7,6 +7,7 @@ class Numer0n {
     private state = State.INACTIVE;
     private playerNumber = '';
     private ai: AI;
+    private name = '';
     playerAttacks = [];
     aiAttacks = [];
     info = '';
@@ -25,7 +26,8 @@ class Numer0n {
         return this.ai.myNumber;
     }
 
-    start(playerNumber: string, playerFirst = true) {
+    start(name: string, playerNumber: string, playerFirst = true) {
+        this.name = name;
         this.playerFirst = playerFirst;
         if (playerNumber === 'tst') {
             benchmark();
@@ -56,7 +58,7 @@ class Numer0n {
                 this.lastAIAttack = '';
                 this.aiMessage = '';
                 this.playerMessage = this.lastPlayerAttack;
-                this.info = 'あなたの攻撃です';
+                this.info = this.name + 'の攻撃です';
                 this.state = State.ATTACK_AI;
                 return promise.resolve(500);
             case State.ATTACK_AI:
@@ -70,13 +72,13 @@ class Numer0n {
                             return promise.resolve(-2);
                         } else {
                             this.aiMessage = hintToString(hint) + '。 雑魚乙ぅ！';
-                            this.info = 'あなたの負けです';
+                            this.info = 'ぬめぐれの勝ちです';
                             return promise.resolve(-2);
                         }
                     }
                     if (hint[0] === 3) {
                         this.aiMessage = '参りました';
-                        this.info = 'あなたの勝ちです';
+                        this.info = this.name + 'の勝ちです';
                         return promise.resolve(-2);
                     }
                 } else {
@@ -91,11 +93,17 @@ class Numer0n {
                     item: toString(this.lastPlayerAttack, hint)
                 });
                 this.state = State.PRE_ATTACK_PLAYER;
-                return promise.resolve(1000);
+                // 先に計算しとく
+                this.ai.callAsync().then(result => {
+                    this.lastAIAttack = result;
+                    this.info = 'ボタンを押してください';
+                    promise.resolve(-3);
+                });
+                this.info = 'ぬめぐれが考えています…';
+                return promise;
             case State.PRE_ATTACK_PLAYER:
                 this.lastPlayerAttack = '';
                 this.playerMessage = '';
-                this.lastAIAttack = this.ai.call();
                 this.aiMessage = this.lastAIAttack;
                 this.info = 'ぬめぐれの攻撃です';
                 this.state = State.ATTACK_PLAYER;
@@ -109,12 +117,12 @@ class Numer0n {
                             this.info = '引き分けです';
                             return promise.resolve(-2);
                         } else {
-                            this.info = 'あなたの勝ちです';
+                            this.info = this.name + 'の勝ちです';
                             return promise.resolve(-2);
                         }
                     }
                     if (hint[0] === 3) {
-                        this.info = 'あなたの負けです';
+                        this.info = 'ぬめぐれの勝ちです';
                         return promise.resolve(-2);
                     }
                 } else {
@@ -129,9 +137,9 @@ class Numer0n {
                 });
                 this.ai.putHint(this.lastAIAttack, hint[0], hint[1]);
                 this.state = State.PRE_ATTACK_AI;
-                return promise.resolve(1000);
+                return promise.resolve(10);
             case State.PRE_ATTACK_AI:
-                this.info = 'あなたの番です。コールしてください。';
+                this.info = this.name + 'の番です。コールしてください。';
                 return promise.resolve(-1);
         }
     }

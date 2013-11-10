@@ -1,3 +1,4 @@
+import cutil = require('./../../../common/util');
 import util = require('./../service/util');
 import InferenceMachine = require('./inferencemachine');
 
@@ -13,6 +14,13 @@ class AI {
     /** 相手の手を予想する */
     call() {
         return this.inferenceMachine.get();
+    }
+    callAsync() {
+        var promise = new cutil.Promise();
+        this.inferenceMachine.getAsync().then(result => {
+            promise.resolve(result);
+        });
+        return promise;
     }
 
     putHint(num: string, hits: number, blows: number) {

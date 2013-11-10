@@ -1,3 +1,4 @@
+import cutil = require('./../../../common/util');
 import util = require('./../service/util');
 import Enumerable = require('linqjs');
 
@@ -22,6 +23,11 @@ class InferenceMachine {
             .select(x => ({ str: x, score: this.calcScore(x) })))
         return list.where(x => x.score === list.max(x => x.score))
             .shuffle().first().str;
+    }
+    getAsync() {
+        var promise = new cutil.Promise();
+        setTimeout(() => promise.resolve(this.get()), 500);
+        return promise;
     }
 
     setHint(str: string, hits: number, blows: number) {

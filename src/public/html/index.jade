@@ -1,8 +1,15 @@
 .row(ng-hide='isGameStarted')
+  .col-xs-12
+    .form-inline
+      .form-group
+        label 名前:
+          | 
+          input.form-control(ng-model='name', ng-init='name = "あなた"', style='max-width: 120px')
+.row(ng-hide='isGameStarted')
   .col-xs-6
     .form-inline
       .form-group
-        label あなたが思い浮かべた数:
+        label {{name}}が思い浮かべた数:
           | 
           input.form-control(ng-model='playerNumber', style='max-width: 80px', placeholder='例：123', maxlength='3')
       | 
@@ -20,14 +27,16 @@
           input.form-control(ng-model='aiNumer', style='max-width: 80px', readonly)
 .row(ng-show='isGameStarted')
   .col-xs-6
-    h2(style='font-size: x-large') あなた
+    h2(style='font-size: x-large') {{name}}
     .form-inline
       .form-group
         label 予想した数:
           | 
-          input.form-control(ng-model='lastPlayerAttack', ng-disabled='wait', style='max-width: 80px', placeholder='例：123', maxlength='3')
+          input.form-control(ng-model='lastPlayerAttack', ng-disabled='wait || !isPlayerTurn', style='max-width: 80px', placeholder='例：123', maxlength='3')
         | 
-        button.btn.btn-default(ng-click='call()', ng-disabled='wait') コール
+        button.btn.btn-default(ng-click='call()', ng-disabled='wait || !isPlayerTurn') コール
+        | 
+        button.btn.btn-default(ng-click='next()', ng-disabled='wait || isPlayerTurn') ぬめぐれのコール
     p
       span(ng-show='playerMessage.length > 0')
         「{{playerMessage}}」
