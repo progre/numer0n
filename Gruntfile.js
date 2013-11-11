@@ -85,12 +85,12 @@ module.exports = function(grunt) {
       }
     },
     connect: {
-      debug: {
+      server: {
         options: {
           base: 'public'
         }
       },
-      release: {
+      keepalive: {
         options: {
           base: 'public',
           keepalive: true
@@ -105,7 +105,7 @@ module.exports = function(grunt) {
           src: [
             '**',
             '!**/*.map', '!js/**/*.js',
-            'js/**/*.min.js'
+            'js/main.js'
           ],
           dest: 'dist/',
           filter: 'isFile'
@@ -119,12 +119,12 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
   grunt.registerTask('default', [
     'debug-build',
-    'connect:debug',
+    'connect:server',
     'watch'
   ]);
   grunt.registerTask('release-server', [
     'release-build',
-    'connect:release',
+    'connect:keepalive',
   ]);
   grunt.registerTask('deploy', [
     'release-build',
