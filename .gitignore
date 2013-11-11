@@ -5,5 +5,5 @@ node_modules/
 *.map
 
 !Gruntfile.js
-!public/js/config.js
-!public/js/lib/**/*.js
+!public/javascript/config.js
+!public/javascript/lib/**/*.js

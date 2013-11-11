@@ -77,17 +77,23 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          name: 'main.min',
-          baseUrl: 'public/js',
-          mainConfigFile: 'public/js/config.js',
-          out: 'public/js/main.min.js'
+          name: 'main',
+          baseUrl: 'public/javascript',
+          mainConfigFile: 'public/javascript/config.js',
+          out: 'public/js/main.js'
         }
       }
     },
     connect: {
-      server: {
+      debug: {
         options: {
           base: 'public'
+        }
+      },
+      release: {
+        options: {
+          base: 'public',
+          keepalive: true
         }
       }
     },
@@ -103,6 +109,9 @@ module.exports = function(grunt) {
           ],
           dest: 'dist/',
           filter: 'isFile'
+        }, {
+          src: ['public/index.html'],
+          dest: 'dist/.html'
         }]
       }
     }
@@ -110,8 +119,12 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
   grunt.registerTask('default', [
     'debug-build',
-    'connect',
+    'connect:debug',
     'watch'
+  ]);
+  grunt.registerTask('release-server', [
+    'release-build',
+    'connect:release',
   ]);
   grunt.registerTask('deploy', [
     'release-build',

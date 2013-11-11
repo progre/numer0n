@@ -5,17 +5,16 @@ link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/boots
 link(rel='stylesheet', href='/css/style.css')
 script(src='//code.jquery.com/jquery-2.0.3.min.js')
 script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.js')
-script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.js')
-script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.js')
+script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js')
+script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.min.js')
 if debug
-  script(src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js', data-main='js/config')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js', data-main='javascript/config')
   script(src='//localhost:35729/livereload.js')
 else
-  script(src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js', data-main='js/main.min')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js', data-main='js/main')
 .container
   h1 ぬめぐれ
   p ぬめろんAI by <a href='https://twitter.com/progremaster'>@ぷろぐれ</a>
   div(ng-view)
     div(style='text-align: center; margin: 40px auto; font-size: 24px')
       | ⏳
-
