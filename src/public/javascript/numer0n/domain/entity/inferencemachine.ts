@@ -24,13 +24,24 @@ class InferenceMachine {
     }
 
     process() {
-        if (this.numbers === this.candidates
-            || this.candidates.count() <= 3) {
+        var left = this.candidates.count();
+        if (this.numbers === this.candidates || left === 2) {
             this.value = this.candidates.shuffle().first();
             return;
         }
+        if (left === 1) {
+            this.value = this.candidates.first();
+            return;
+        }
+        if (left <= 3) {
+            var list = compress(this.candidates
+                .select(x => ({ str: x, score: this.calcScore(x) })));
+            this.value = list.where(x => x.score === list.max(x => x.score))
+                .shuffle().first().str;
+            return
+        }
         var list = compress(this.numbers
-            .select(x => ({ str: x, score: this.calcScore(x) })))
+            .select(x => ({ str: x, score: this.calcScore(x) })));
         this.value = list.where(x => x.score === list.max(x => x.score))
             .shuffle().first().str;
     }
