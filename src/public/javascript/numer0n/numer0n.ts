@@ -184,30 +184,37 @@ enum State {
 }
 
 function benchmark() {
-    var count = 0;
-    var max = 0;
-    var func = i => {
-        var ai = new AI('012');
-        for (var j = 0; ; j++) {
-            var call = ai.call();
-            var hint = util.getHint('012', call);
-            if (hint[0] === 3) {
-                count += j;
-                if (max < j)
-                    max = j;
-                break;
-            }
-            ai.putHint(call, hint[0], hint[1]);
-        }
+    benchmarkOneCycleAsync(0, 0).then(x => {
+        console.log(x / 10);
+    });
+}
 
-        i++;
-        if (i === 1) {
-            console.log(count / 10, max);
+function benchmarkOneCycleAsync(count: number, sum: number): cutil.Promise {
+    var MAX = 10;
+    var promise = new cutil.Promise();
+    var ai = new AI('012');
+    processAsync(ai, 1).then(x => {
+        count++;
+        sum += x;
+        if (count >= MAX) {
+            return promise.resolve(sum);
+        }
+        benchmarkOneCycleAsync(count, sum).then(x => promise.resolve(x));
+    });
+    return promise;
+}
+
+function processAsync(ai: AI, count: number): cutil.Promise {
+    var promise = new cutil.Promise();
+    ai.processAsync().then(() => {
+        var call = ai.call();
+        var hint = util.getHint('012', call);
+        if (hint[0] === 3) {
+            promise.resolve(count);
             return;
         }
-        setTimeout(() =>
-            func(i), 0.0001);
-    };
-
-    func(0);
+        ai.putHint(call, hint[0], hint[1]);
+        processAsync(ai, count + 1).then(x => promise.resolve(x));
+    });
+    return promise;
 }
