@@ -1,11 +1,11 @@
-.row(ng-hide='isGameStarted')
+.row.animate-hide(ng-hide='isGameStarted')
   .col-xs-12
     .form-inline
       .form-group
         label 名前:
           | 
           input.form-control(ng-model='name', ng-init='name = "あなた"', style='max-width: 120px')
-.row(ng-hide='isGameStarted')
+.row.animate-hide(ng-hide='isGameStarted')
   .col-xs-6
     .form-inline
       .form-group
@@ -25,7 +25,7 @@
         label ぬめぐれが思い浮かべた数:
           | 
           input.form-control(ng-model='aiNumer', style='max-width: 80px', readonly)
-.row(ng-show='isGameStarted')
+.row.animate-hide(ng-show='isGameStarted')
   .col-xs-6
     h2(style='font-size: x-large') {{name}}
     .form-inline
@@ -38,7 +38,7 @@
         | 
         button.btn.btn-default(ng-click='next()', ng-disabled='wait || isPlayerTurn') ぬめぐれのコール
     p
-      span(ng-show='playerMessage.length > 0')
+      span.animate-hide(ng-show='playerMessage.length > 0')
         「{{playerMessage}}」
   .col-xs-6
     h2(style='font-size: x-large') ぬめぐれ
@@ -48,15 +48,15 @@
           | 
           input.form-control(ng-model='lastAIAttack', style='max-width: 80px', readonly)
     p
-      span(ng-show='aiMessage.length > 0')
+      span.animate-hide(ng-show='aiMessage.length > 0')
         「{{aiMessage}}」
 .row
   .col-xs-12
-    .alert.alert-info(ng-show='info.length > 0') {{info}}
-    .alert.alert-danger(ng-show='danger.length > 0') {{danger}}
-.container(ng-show='done')
+    .alert.alert-info.animate-hide(ng-show='info.length > 0') {{info}}
+    .alert.alert-danger.animate-hide(ng-show='danger.length > 0') {{danger}}
+.container.animate-hide(ng-show='done')
   button.btn.btn-default(ng-click='reset()') もう1回プレイする
-.row(ng-show='isGameStarted')
+.row.animate-hide(ng-show='isGameStarted')
   .col-xs-6
     h2(style='font-size: x-large') これまでの予想
     ul.list-unstyled

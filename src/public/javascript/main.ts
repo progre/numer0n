@@ -2,7 +2,7 @@
 /// <reference path="../../DefinitelyTyped/linq.d.ts"/>
 import Numer0n = require('./numer0n/numer0n');
 
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute', 'ngAnimate']);
 app.config(['$routeProvider',
     ($routeProvider: ng.IRouteProvider) => {
         $routeProvider

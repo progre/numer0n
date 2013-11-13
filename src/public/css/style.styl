@@ -1,3 +1,40 @@
+transition() {
+  -webkit-transition arguments
+  -moz-transition arguments
+  -ms-transition arguments
+  -o-transition arguments
+  transition arguments
+}
+transform() {
+  -webkit-transform arguments
+  -moz-transform arguments
+  -ms-transform arguments
+  -o-transform arguments
+  transform arguments
+}
+
 .row {
   width: 100%;
+}
+
+// ng-animate
+.ng-enter, .ng-leave, .animate-hide {
+  transition: 100ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  position: relative;
+  display: block;
+}
+ 
+.ng-leave.ng-leave-active, .ng-enter, .animate-hide.ng-hide {
+  transform: scaleY(0);
+  height: 0;
+  opacity: 0;
+}
+ 
+.ng-enter.ng-enter-active, .ng-leave {
+  transform: scaleY(1);
+  opacity: 1;
+}
+ 
+.animate-hide.ng-hide-add, .animate-hide.ng-hide-remove {
+  display:block!important;
 }
