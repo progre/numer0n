@@ -18,7 +18,7 @@
           input(ng-model='playerFirst', ng-init='playerFirst = true', type='checkbox')
           |  先攻
       | 
-      button.btn.btn-default(ng-click='start(playerNumber, playerFirst)') ゲーム開始
+      button.btn.btn-primary(ng-click='start(playerNumber, playerFirst)') ゲーム開始
   .col-xs-6
     .form-inline
       .form-group
@@ -34,9 +34,9 @@
           | 
           input.form-control(ng-model='lastPlayerAttack', ng-disabled='wait || !isPlayerTurn', style='max-width: 80px', placeholder='例：123', maxlength='3')
         | 
-        button.btn.btn-default(ng-click='call()', ng-disabled='wait || !isPlayerTurn') コール
+        button.btn.btn-primary(ng-click='call()', ng-disabled='wait || !isPlayerTurn') コール
         | 
-        button.btn.btn-default(ng-click='next()', ng-disabled='wait || isPlayerTurn') ぬめぐれのコール
+        button.btn.btn-primary(ng-click='next()', ng-disabled='wait || isPlayerTurn') ぬめぐれのコール
     p
       span.animate-hide(ng-show='playerMessage.length > 0')
         「{{playerMessage}}」
