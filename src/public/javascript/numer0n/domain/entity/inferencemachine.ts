@@ -42,8 +42,15 @@ class InferenceMachine {
         }
         var list = compress(this.numbers
             .select(x => ({ str: x, score: this.calcScore(x) })));
-        this.value = list.where(x => x.score === list.max(x => x.score))
-            .shuffle().first().str;
+        var bestScores = compress(list
+            .where(x => x.score === list.max(x => x.score))
+            .select(x => x.str));
+        var bestScoresCandidates = this.candidates.where(x => bestScores.contains(x));
+        if (bestScoresCandidates.count() > 0) {
+            this.value = bestScoresCandidates.shuffle().first();
+            return;
+        }
+        this.value = bestScores.shuffle().first();
     }
 
     processAsync() {
