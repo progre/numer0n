@@ -16,6 +16,10 @@ class InferenceMachine {
         this.candidates = this.numbers;
     }
 
+    count() {
+        return this.candidates.count();
+    }
+
     get() {
         if (this.value.length === 0) {
             this.process();

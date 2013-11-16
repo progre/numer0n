@@ -64,7 +64,16 @@ class Numer0n {
             case State.ATTACK_AI:
                 var hint = this.ai.getHint(this.lastPlayerAttack);
                 this.aiMessage = hintToString(hint);
-                if (!this.playerFirst) {
+                var count = this.ai.countCandidates();
+                if (this.playerFirst) {
+                    if (hint[0] === 3) {
+                        this.aiMessage += '。なん…だと…';
+                        this.info = 'リーチです';
+                        this.reach = true;
+                    } else if (count === 1) {
+                        this.aiMessage += '。テーレッテー';
+                    }
+                } else {
                     if (this.reach) {
                         if (hint[0] === 3) {
                             this.aiMessage = 'やりよるね。';
@@ -77,15 +86,13 @@ class Numer0n {
                         }
                     }
                     if (hint[0] === 3) {
-                        this.aiMessage = '参りました';
+                        if (count > 50) {
+                            this.aiMessage = 'あークソゲあー売ろう';
+                        } else {
+                            this.aiMessage = '参りました';
+                        }
                         this.info = this.name + 'の勝ちです';
                         return promise.resolve(-2);
-                    }
-                } else {
-                    if (hint[0] === 3) {
-                        this.aiMessage += '。なん…だと…';
-                        this.info = 'リーチです';
-                        this.reach = true;
                     }
                 }
                 this.playerAttacks.push({
@@ -107,7 +114,20 @@ class Numer0n {
                 this.lastAIAttack = this.ai.call();
                 this.lastPlayerAttack = '';
                 this.playerMessage = '';
-                this.aiMessage = this.lastAIAttack;
+                var count = this.ai.countCandidates();
+                if (count === 1) {
+                    if (this.reach) {
+                        this.aiMessage = this.lastAIAttack + '。切り返してゆくぅ';
+                    } else {
+                        this.aiMessage = this.lastAIAttack + '。雑魚乙ぅ！';
+                    }
+                } else if (count < 3) {
+                    this.aiMessage = 'あたれー ' + this.lastAIAttack;
+                } else if (count < 16) {
+                    this.aiMessage = this.lastAIAttack + '。そろそろボコすんでー';
+                } else {
+                    this.aiMessage = this.lastAIAttack;
+                }
                 this.info = 'ぬめぐれの攻撃です';
                 this.state = State.ATTACK_PLAYER;
                 return promise.resolve(500);
@@ -126,6 +146,17 @@ class Numer0n {
                     }
                     if (hint[0] === 3) {
                         this.info = 'ぬめぐれの勝ちです';
+                        var count = this.ai.countCandidates();
+                        if (count === 1) {
+                        } else if (count < 8) {
+                            this.aiMessage = '雑魚乙ぅ';
+                        } else if (count < 16) {
+                            this.aiMessage = '大勝利！';
+                        } else if (count < 32) {
+                            this.aiMessage = 'はー神ゲー';
+                        } else {
+                            this.aiMessage = 'えっ';
+                        }
                         return promise.resolve(-2);
                     }
                 } else {

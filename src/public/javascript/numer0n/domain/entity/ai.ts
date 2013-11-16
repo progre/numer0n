@@ -11,6 +11,10 @@ class AI {
         this.myNumber = num;
     }
 
+    countCandidates() {
+        return this.inferenceMachine.count();
+    }
+
     /** 相手の手を予想する */
     call() {
         return this.inferenceMachine.get();
