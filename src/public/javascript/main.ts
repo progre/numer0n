@@ -2,11 +2,15 @@
 /// <reference path="../../DefinitelyTyped/linq.d.ts"/>
 import Numer0n = require('./numer0n/numer0n');
 
+var depth = 2;
+var base = location.pathname.match('^((\/.+?){' + depth + '})\/')[1];
+
 var app = angular.module('app', ['ngRoute', 'ngAnimate']);
-app.config(['$routeProvider',
-    ($routeProvider: ng.IRouteProvider) => {
+app.config(['$routeProvider', '$locationProvider',
+    ($routeProvider: ng.IRouteProvider, $locationProvider) => {
+        $locationProvider.html5Mode(true);
         $routeProvider
-            .when('/', {
+            .when(base + '/', {
                 templateUrl: 'html/index.html', controller: 'IndexController'
             }).otherwise({
                 templateUrl: 'html/404.html'
